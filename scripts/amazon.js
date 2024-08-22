@@ -77,6 +77,15 @@ document.querySelectorAll('.js-add-to-cart')
           quantity: 1
         })
       }
-      console.log(cart);
+
+      // Incremento la q.ta tot del carrello
+      let cartQuantity = 0;
+      cart.forEach((item) => {
+        cartQuantity += item.quantity;
+      });
+
+      // Rendo interattiva il numero del carrello
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+
     });
   });
