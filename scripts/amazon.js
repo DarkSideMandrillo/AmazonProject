@@ -1,4 +1,4 @@
-
+import { cart } from "../data/cart.js";
 
 //Generate the HTML in products-grid
 let productsHTML = '';
