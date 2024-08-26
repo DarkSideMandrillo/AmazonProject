@@ -21,7 +21,7 @@ function saveToStorage() {
 }
 
 //  Cerca un productId dentro Cart e ritorna tutto l'oggetto del carrello
-function findProductInCart(productId) {
+function getProductCart(productId) {
   let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
@@ -33,7 +33,7 @@ function findProductInCart(productId) {
 
 // Controllo se esiste già un ID in cart[], se si incremento q.ta, altrimenti aggiungo 1
 export function addToCart(productId) {
-  const matchingItem = findProductInCart(productId);
+  const matchingItem = getProductCart(productId);
 
   if (matchingItem) {
     matchingItem.quantity += 1;
@@ -60,7 +60,7 @@ export function removeFromCart(produIdToRemove) {
 }
 
 export function updateDeliveryOption(productId, deliveryOptionId) {
-  const matchingItem = findProductInCart(productId);
+  const matchingItem = getProductCart(productId);
 
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();
