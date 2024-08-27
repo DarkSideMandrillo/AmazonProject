@@ -11,7 +11,7 @@ export function renderPaymentSummary() {
     const product = getProduct(cartItem.productId);
     productPriceCents += product.priceCents * cartItem.quantity;
 
-    const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
+    const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId || '1');
     shippingPriceCents += deliveryOption.priceCents;
   });
 
@@ -25,7 +25,7 @@ export function renderPaymentSummary() {
       </div>
 
       <div class="payment-summary-row">
-        <div>Items (3):</div>
+        <div class="js-payment-summary-item-number">Items (3):</div>
         <div class="payment-summary-money">
           $${formatCurrency(productPriceCents)}
         </div>
@@ -63,6 +63,23 @@ export function renderPaymentSummary() {
         Place your order
       </button>
   `;
+
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 
+  // Aggiornamento Q.ta visualizzate
+
+checkoutQuantity();
+
+}
+
+export function checkoutQuantity(){
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  // Aggiorno il valore qta dell'header checkout
+  document.querySelector('.js-checkout-header-quantity').innerHTML = cartQuantity;
+  // Aggiorno il valore qta del carrello 
+ document.querySelector('.js-payment-summary-item-number').innerHTML = `items (${cartQuantity})`;
+  
 }

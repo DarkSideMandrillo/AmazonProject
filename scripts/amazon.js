@@ -2,6 +2,7 @@ import { cart, addToCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import formatCurrency from "./utils/money.js";
 
+updateCartQuantity()
 //Generate the HTML in products-grid
 let productsHTML = '';
 
@@ -28,7 +29,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-quantity-container">
-          <select>
+          <select id="select-${product.id}">
             <option selected value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -64,8 +65,11 @@ document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId;
-
-      addToCart(productId);
+      //  Prendo il valore di <select> per aggiungere una q.ta specifica
+      let selectQuantity = document.getElementById(`select-${productId}`);
+      selectQuantity= parseInt(selectQuantity.value);
+      
+      addToCart(productId,selectQuantity);
       updateCartQuantity()
 
     });

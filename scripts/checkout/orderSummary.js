@@ -3,12 +3,12 @@ import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
-import { renderPaymentSummary } from "./paymentSummery.js";
+import { renderPaymentSummary, checkoutQuantity } from "./paymentSummery.js";
 
 export function renderOrderSummary() {
 
   let cartSummaryHTML = '';
-
+  
   cart.forEach((cartItem) => {
 
     const productId = cartItem.productId;
@@ -16,7 +16,7 @@ export function renderOrderSummary() {
     const matchingProduct = getProduct(productId);
 
     // Prende dal carrello il deliveryOption, FUNC in DeliveryOption che ritorna l'oggetto completo
-    const deliveryOptionId = cartItem.deliveryOptionId;
+    const deliveryOptionId = cartItem.deliveryOptionId || '1';
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
 
@@ -25,8 +25,8 @@ export function renderOrderSummary() {
     const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
     const dateString = deliveryDate.format('dddd, MMMM D');
 
-
-
+    // calcolo la quantità totale del carrello
+    
     cartSummaryHTML += `
   <div class="cart-item-container 
   js-cart-item-container-${matchingProduct.id}">
@@ -80,8 +80,8 @@ export function renderOrderSummary() {
         ? 'FREE'
         : `$${formatCurrency(deliveryOption.priceCents)}  -`;
 
-      // Creo il check blu
-      const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+      // Creo il check blu. Se non c'è cartItem.deliveryOptionId, scelgo l'opzione 1
+      const isChecked = deliveryOption.id === (cartItem.deliveryOptionId || '1');
 
       html += `
     <div class="delivery-option js-delivery-option"
@@ -107,9 +107,12 @@ export function renderOrderSummary() {
     return html;
   }
 
+
+
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
-  // Giro per ogni link "delete" creato
+  
+  // Giro per ogni link "delete" creato. Event Listner
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
       const productID = link.dataset.productId;
@@ -120,10 +123,12 @@ export function renderOrderSummary() {
         `.js-cart-item-container-${productID}`)
       container.remove();
 
+      checkoutQuantity()
       renderPaymentSummary();
     });
   });
 
+  // RiRenderizzo la pagina ogni click su deliveryOption.  Event Listner
   document.querySelectorAll('.js-delivery-option').forEach((element) => {
     const { productId, deliveryOptionId } = element.dataset;
     element.addEventListener('click', () => {
