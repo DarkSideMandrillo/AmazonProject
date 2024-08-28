@@ -32,15 +32,15 @@ function getProductCart(productId) {
 }
 
 // Controllo se esiste già un ID in cart[], se si incremento q.ta, altrimenti aggiungo 1
-export function addToCart(productId) {
+export function addToCart(productId,quantity) {
   const matchingItem = getProductCart(productId);
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity += quantity;
   } else {
     cart.push({
       productId: productId,
-      quantity: 1,
+      quantity: quantity,
       deliveryOptionsId: '1'
     })
   }
