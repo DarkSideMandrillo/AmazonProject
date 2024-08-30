@@ -1,14 +1,14 @@
 class Cart{
     cartItems;
-    localStorageKey;
+    #localStorageKey; // private propriety
 
     constructor(localStorageKey){
-        this.loadFromStorage();
-        this.loadFromStorage=localStorageKey;
+        this.#localStorageKey=localStorageKey;
+        this.#loadFromStorage();
     }
 
-    loadFromStorage() { // shortcut di "nome: function(){}""
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    #loadFromStorage() { // shortcut di "nome: function(){}""
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
       
         if (!this.cartItems) {
           this.cartItems = [{
@@ -24,7 +24,7 @@ class Cart{
     }
     // Salvo il carrello in localstorage
     saveToStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     }
     //  Cerca un productId dentro Cart e ritorna tutto l'oggetto del carrello
     getProductCart(productId) {
@@ -73,7 +73,7 @@ class Cart{
 const cart = new Cart('cart-oop');
 const businessCart = new Cart('cart-business');
 
-
+//cart.#localStorageKey ='test'; //error
 
 console.log(cart);
 console.log(businessCart);
