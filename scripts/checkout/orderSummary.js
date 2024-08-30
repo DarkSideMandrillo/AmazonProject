@@ -8,7 +8,7 @@ import { renderPaymentSummary, checkoutQuantity } from "./paymentSummery.js";
 export function renderOrderSummary() {
 
   let cartSummaryHTML = '';
-  
+
   cart.forEach((cartItem) => {
 
     const productId = cartItem.productId;
@@ -26,9 +26,10 @@ export function renderOrderSummary() {
     const dateString = deliveryDate.format('dddd, MMMM D');
 
     // calcolo la quantità totale del carrello
-    
+
     cartSummaryHTML += `
-  <div class="cart-item-container 
+  <div class="cart-item-container
+  js-cart-item-container
   js-cart-item-container-${matchingProduct.id}">
     <div class="delivery-date">
       Delivery date: ${dateString}
@@ -44,14 +45,15 @@ export function renderOrderSummary() {
         <div class="product-price">
           $${formatCurrency((matchingProduct.priceCents * cartItem.quantity))}
         </div>
-        <div class="product-quantity">
+        <div class="product-quantity
+        js-product-quantity-${matchingProduct.id}">
           <span>
             Quantity: <span class="quantity-label">${cartItem.quantity}</span>
           </span>
           <span class="update-quantity-link link-primary">
             Update
           </span>
-          <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+          <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchingProduct.id}" data-product-id="${matchingProduct.id}">
             Delete
           </span>
         </div>
@@ -111,7 +113,7 @@ export function renderOrderSummary() {
 
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
-  
+
   // Giro per ogni link "delete" creato. Event Listner
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
