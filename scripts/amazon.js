@@ -1,7 +1,6 @@
-import { cart, addToCart } from "../data/cart.js";
+import { cart} from "../data/cart-oop.js";
 import { products } from "../data/products.js";
 import formatCurrency from "./utils/money.js";
-//import '../data/cart-class.js';
 
 updateCartQuantity()
 //Generate the HTML in products-grid
@@ -72,7 +71,7 @@ document.querySelectorAll('.js-add-to-cart')
       let selectQuantity = document.getElementById(`select-${productId}`);
       selectQuantity= parseInt(selectQuantity.value);
       
-      addToCart(productId,selectQuantity);
+      cart.addToCart(productId,selectQuantity);
       updateCartQuantity()
 
     });
@@ -82,7 +81,7 @@ document.querySelectorAll('.js-add-to-cart')
 
 function updateCartQuantity() {
   let cartQuantity = 0;
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
   });
   // Rendo interattiva il numero del carrello

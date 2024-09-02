@@ -1,4 +1,5 @@
-import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
+//import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
+import { cart } from "../../data/cart-oop.js";
 import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -9,7 +10,7 @@ export function renderOrderSummary() {
 
   let cartSummaryHTML = '';
 
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
 
     const productId = cartItem.productId;
     // func in product.js
@@ -118,7 +119,7 @@ export function renderOrderSummary() {
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
       const productID = link.dataset.productId;
-      removeFromCart(productID);
+      cart.removeFromCart(productID);
 
       //  Prendo l'elemento usando DOM per cancellarlo
       const container = document.querySelector(
@@ -134,7 +135,7 @@ export function renderOrderSummary() {
   document.querySelectorAll('.js-delivery-option').forEach((element) => {
     const { productId, deliveryOptionId } = element.dataset;
     element.addEventListener('click', () => {
-      updateDeliveryOption(productId, deliveryOptionId);
+      cart.updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
       renderPaymentSummary();
     });
