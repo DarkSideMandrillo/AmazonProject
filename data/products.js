@@ -12,6 +12,7 @@ export function getProduct(productId) {
   return matchingProduct;
 }
 
+//  Class
 class Product {
   id;
   image;
@@ -29,8 +30,27 @@ class Product {
 
   getStarUrl(){return `images/ratings/rating-${this.rating.stars * 10}.png`;}
   getPrice(quantity=1){return `$${formatCurrency(this.priceCents)*quantity}`;}
+  extraInfoHTML(){return '';}
 }
 
+class Clothing extends Product{
+sizeChartLink;
+
+constructor(productDetails){
+  super(productDetails);
+  this.sizeChartLink=productDetails.sizeChartLink;
+}
+
+extraInfoHTML(){
+  //  super.extraInfoHTML(); Per richiamare il metodo padre e non fare override
+  return `
+    <a href="${this.sizeChartLink}" target="_blank">
+      Size chart
+    </a>
+  `;
+}
+
+}
 
 export const products = [
   {
@@ -76,7 +96,7 @@ export const products = [
       "apparel",
       "mens"
     ],
-    type: "clothing",
+    type: "clothing", // Discriminator property
     sizeChartLink: "images/clothing-size-chart.png"
   },
   {
@@ -692,5 +712,8 @@ export const products = [
     ]
   }
 ].map((productDetails)=>{
+  if(productDetails.type=== "clothing"){
+    return new Clothing(productDetails);
+    }
   return new Product(productDetails);
 }); 
