@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart-oop.js";
+import { cart } from "../../data/cart-class.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import formatCurrency from "../utils/money.js";
@@ -74,7 +74,7 @@ checkoutQuantity();
 
 export function checkoutQuantity(){
   let cartQuantity = 0;
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
   });
   // Aggiorno il valore qta dell'header checkout
