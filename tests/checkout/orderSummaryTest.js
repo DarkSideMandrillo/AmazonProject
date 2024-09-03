@@ -1,13 +1,13 @@
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
-import { addToCart, cart, loadFromStorage } from "../../data/cart.js";
-import { loadProducts } from "../../data/products.js";
+import { loadFromStorage } from "../../data/cart-class.js";
+import { loadProducts, loadProductsFetch } from "../../data/products.js";
 
 describe('test suite: renderOrderSummary', () => {
 
-  beforeAll((done)=>{
-    loadProducts(()=>{
+  beforeAll((done) => {
+    loadProductsFetch().then(() => {
       done();
-    });
+    })
   });
 
   it('displays the cart', () => {

@@ -1,15 +1,11 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummery.js";
-import { loadProducts } from "../data/products.js";
+import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart-class.js";
 //import '../data/cart-class.js';
 
 Promise.all([//Crea 2 thread eseguiti nello stesso momento
-    new Promise((resolve) => {
-        loadProducts(() => { // ricordiamo che loadproducts chiede il passaggio di una func e la esegue alla fine
-            resolve('value1'); // Il resolve richiama il .then
-        });
-    }),
+    loadProductsFetch(),
     new Promise((resolve) => {
         loadCart(() => { // Come loadProducts
             resolve();
