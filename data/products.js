@@ -1,4 +1,4 @@
-import {formatCurrency} from '../scripts/utils/money.js'
+import { formatCurrency } from '../scripts/utils/money.js'
 
 // Ritorna il prodotto da productId
 export function getProduct(productId) {
@@ -20,53 +20,53 @@ class Product {
   rating;
   priceCents;
 
-  constructor(productDetails){
-    this.id=productDetails.id;
-    this.image=productDetails.image;
-    this.name=productDetails.image;
-    this.rating=productDetails.rating;
-    this.priceCents=productDetails.priceCents;
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
   }
 
-  getStarUrl(){return `images/ratings/rating-${this.rating.stars * 10}.png`;}
-  getPrice(quantity=1){return `$${formatCurrency(this.priceCents)*quantity}`;}
-  extraInfoHTML(){return '';}
+  getStarUrl() { return `images/ratings/rating-${this.rating.stars * 10}.png`; }
+  getPrice(quantity = 1) { return `$${formatCurrency(this.priceCents * quantity)}`; }
+  extraInfoHTML() { return ''; } // Usato nel polimorfismo
 }
 
-class Clothing extends Product{
-sizeChartLink;
+class Clothing extends Product {
+  sizeChartLink;
 
-constructor(productDetails){
-  super(productDetails);
-  this.sizeChartLink=productDetails.sizeChartLink;
-}
+  constructor(productDetails) {
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
 
-extraInfoHTML(){
-  //  super.extraInfoHTML(); Per richiamare il metodo padre e non fare override
-  return `
+  extraInfoHTML() {
+    //  super.extraInfoHTML(); Per richiamare il metodo padre e non fare override
+    return `
     <a href="${this.sizeChartLink}" target="_blank">
       Size chart
     </a>
   `;
-}
+  }
 
 }
-export let products=[];
-export function loadProducts(fun){
- const xhr = new XMLHttpRequest();
- 
- xhr.addEventListener('load',()=>{
-  products = JSON.parse(xhr.response).map((productDetails)=>{
-    if(productDetails.type==='clothing')
-      return new Clothing(productDetails);
-    return new Product(productDetails);
+export let products = [];
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === 'clothing')
+        return new Clothing(productDetails);
+      return new Product(productDetails);
+    });
+
+    console.log('load products');
+    fun();
   });
-
-  console.log('load products');
-  fun();
- });
- xhr.open('GET','https://supersimplebackend.dev/products');
- xhr.send();
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
 }
 
 

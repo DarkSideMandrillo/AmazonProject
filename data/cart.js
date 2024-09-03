@@ -1,4 +1,4 @@
-
+/*
 
 export let cart;
 
@@ -70,3 +70,4 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();
 }
+*/
