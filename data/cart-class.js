@@ -77,7 +77,7 @@ const businessCart = new Cart('cart-business');
 
 //-----------------------------------//
 export let products = [];
-export function loadCart(fun) {
+export function loadCart(fun = () => { }) {
   const xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', () => {
