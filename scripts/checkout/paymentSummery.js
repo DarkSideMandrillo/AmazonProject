@@ -59,20 +59,35 @@ export function renderPaymentSummary() {
         </div>
       </div>
 
-      <button class="place-order-button button-primary">
+      <button class="place-order-button button-primary js-place-order">
         Place your order
       </button>
   `;
 
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 
-  // Aggiornamento Q.ta visualizzate
+  document.querySelector('.js-place-order').addEventListener('click', async () => {
+    const response = await fetch('https://supersimplebackend.dev/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Tipe': 'application/json'
+      },
+      body: JSON.stringify({
+        cart: cart.cartItems
+      })
+    });
 
-checkoutQuantity();
+    const order = await response.json();
+    console.log(order);
+  });
+
+
+  // Aggiornamento Q.ta visualizzate
+  checkoutQuantity();
 
 }
 
-export function checkoutQuantity(){
+export function checkoutQuantity() {
   let cartQuantity = 0;
   cart.cartItems.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
@@ -80,6 +95,6 @@ export function checkoutQuantity(){
   // Aggiorno il valore qta dell'header checkout
   document.querySelector('.js-checkout-header-quantity').innerHTML = cartQuantity;
   // Aggiorno il valore qta del carrello 
- document.querySelector('.js-payment-summary-item-number').innerHTML = `items (${cartQuantity})`;
-  
+  document.querySelector('.js-payment-summary-item-number').innerHTML = `items (${cartQuantity})`;
+
 }
