@@ -1,8 +1,15 @@
 import { orders } from "../data/orders.js";
-import { getProduct, loadProducts } from "../data/products.js";
+import { getProduct, loadProductsFetch } from "../data/products.js";
 import formatCurrency from "./utils/money.js";
 
-loadProducts(renderOrdersGrid);
+try {
+  await loadProductsFetch();
+  resolve();
+} catch (error) { console.log(`unexpected error. please try again ${error}`); }
+
+renderOrdersGrid()
+
+//loadProducts(renderOrdersGrid);
 
 function renderOrdersGrid() {
   let ordersHTML = ``;
