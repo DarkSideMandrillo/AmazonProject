@@ -2,6 +2,7 @@ import { cart } from "../../data/cart-class.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import formatCurrency from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -67,25 +68,33 @@ export function renderPaymentSummary() {
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 
   document.querySelector('.js-place-order').addEventListener('click', async () => {
-    const response = await fetch('https://supersimplebackend.dev/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        cart:  [{
-          productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-          quantity: 2,
-          deliveryOptionId: '1'
-        }, {
-          productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-          quantity: 1,
-          deliveryOptionId: '2'
-        }] //cart.cartItems
-      })
-    });
-    const order = await response.json();
-    console.log(order);
+    try {
+      const response = await fetch('https://supersimplebackend.dev/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart: [{
+            productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+            quantity: 2,
+            deliveryOptionId: '1'
+          }, {
+            productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+            quantity: 1,
+            deliveryOptionId: '2'
+          }] //cart.cartItems
+        })
+      });
+      const order = await response.json();
+      addOrder(order);
+
+    } catch (error) {
+      console.log('Unexpected error, try again later');
+    }
+
+    window.location.href = 'orders.html';
+
   });
 
 
