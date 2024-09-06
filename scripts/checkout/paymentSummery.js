@@ -69,21 +69,15 @@ export function renderPaymentSummary() {
 
   document.querySelector('.js-place-order').addEventListener('click', async () => {
     try {
+      const cartOrder = buildOrder(); // Creo l'ordine come lo vuole il backend
+
       const response = await fetch('https://supersimplebackend.dev/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          cart: [{
-            productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-            quantity: 2,
-            deliveryOptionId: '1'
-          }, {
-            productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-            quantity: 1,
-            deliveryOptionId: '2'
-          }] //cart.cartItems
+          cart: cartOrder
         })
       });
       const order = await response.json();
@@ -93,7 +87,7 @@ export function renderPaymentSummary() {
       console.log('Unexpected error, try again later');
     }
 
-    window.location.href = 'orders.html';
+    //window.location.href = 'orders.html';
 
   });
 
@@ -112,5 +106,15 @@ export function checkoutQuantity() {
   document.querySelector('.js-checkout-header-quantity').innerHTML = cartQuantity;
   // Aggiorno il valore qta del carrello 
   document.querySelector('.js-payment-summary-item-number').innerHTML = `items (${cartQuantity})`;
+
+}
+
+function buildOrder() {
+  const buildOrder = cart.cartItems.map((item) => ({
+    productId: item.productId,
+    quantity: item.quantity,
+    deliveryOptionId: item.deliveryOption
+  }));
+  return buildOrder;
 
 }
