@@ -6,7 +6,7 @@ loadProducts(renderOrdersGrid);
 
 function renderOrdersGrid() {
   let ordersHTML = ``;
-
+  // Per ogni ordine creo l'heder
   orders.forEach((order) => {
     ordersHTML += `
     <div class="order-container">
@@ -38,6 +38,7 @@ function renderOrdersGrid() {
 
   document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
 
+  // Popolo la griglia di ogni ordine con i products
   orders.forEach((order) => {
     let orderHTML = '';
     order.products.forEach((orderProduct) => {

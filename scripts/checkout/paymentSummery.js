@@ -83,11 +83,13 @@ export function renderPaymentSummary() {
       const order = await response.json();
       addOrder(order);
 
+      cart.clear();
+      console.log('clear cart');
     } catch (error) {
       console.log('Unexpected error, try again later');
     }
+    window.location.href = 'orders.html';
 
-    //window.location.href = 'orders.html';
 
   });
 

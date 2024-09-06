@@ -66,6 +66,10 @@ class Cart {
     matchingItem.deliveryOptionId = deliveryOptionId;
     this.saveToStorage();
   }
+  clear() {
+    this.cartItems = [];
+    this.saveToStorage();
+  }
 }
 
 
